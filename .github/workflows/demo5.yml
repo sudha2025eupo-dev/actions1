@@ -24,13 +24,24 @@ jobs:
       # Runs a single command using the runners shell
       - name: create a text file
         run: echo "Hello world" > hello.txt
+        #upload artificat to create dependency to next next job
+      - uses: actions/upload-artifact@v4
+        with:
+          name:hello-file
+          path:hello.txt
+
   test:    
-        runs-on: ubuntu-latest
-        steps:
+      runs-on: ubuntu-latest
+      steps:
+         #download artificat to create dependency to next next job
+      - uses: actions/download-artifact@v4
+        with:
+          name:hello-file
+
       # Runs a set of commands using the runners shell
-        - name: list file
-          run: ls 
-        - name: Test File
-          run: cat hello.txt|grep -i "hello world"
+      - name: list file
+        run: ls 
+      - name: Test File
+        run: cat hello.txt|grep -i "hello world"
       #    echo Add other actions to build,
        # echo test, and deploy your project.
