@@ -1,0 +1,34 @@
+name: demo5
+on: 
+  workflow_dispatch:
+
+env:
+  GREETING: Hello
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: create a text file
+        # This creates "Hello,WORLD" (assuming the secret is WORLD)
+        run: echo "${{env.GREETING}},${{secrets.WORLD}}" > hello.txt
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: hello-file
+          path: hello.txt
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          name: hello-file
+
+      - name: list file
+        run: ls -R
+
+      - name: Test File
+        # Use grep -E to handle the comma or search for the greeting specifically
+        run: cat hello.txt | grep -i "${{env.GREETING}}"
