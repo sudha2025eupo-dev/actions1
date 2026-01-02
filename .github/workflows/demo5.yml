@@ -23,10 +23,14 @@ jobs:
 
       # Runs a single command using the runners shell
       - name: create a text file
-        run: echo Hello, world! > hello.txt
-
+        run: echo "Hello world" > hello.txt
+  test:    
+        runs-on: ubuntu-latest
+        steps:
       # Runs a set of commands using the runners shell
-      #- name: Run a multi-line script
-      #  run: |
+        - name: list file
+          run: ls 
+        - name: Test File
+          run: cat hello.txt|grep -i "hello world"
       #    echo Add other actions to build,
        # echo test, and deploy your project.
